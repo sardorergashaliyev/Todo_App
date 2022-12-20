@@ -4,7 +4,7 @@ class TodoModel {
 
   TodoModel({required this.title, this.isDone = false});
   factory TodoModel.fromJson(Map todo) {
-    return TodoModel(title: todo['title'], isDone: todo['is_done']);
+    return TodoModel(title: todo['title'], isDone: todo['is_done'] ?? false);
   }
   Map toJson() {
     return {"title": title, "is_done": isDone};

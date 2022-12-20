@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo/pages/home_page.dart';
+import 'package:todo/pages/splash_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main(List<String> args) {
   runApp(const MainPage());
@@ -10,9 +11,16 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
+    return ScreenUtilInit(
+      designSize: const Size(428, 926),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (BuildContext context, Widget? child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: SplashScreen(),
+        );
+      },
     );
   }
 }

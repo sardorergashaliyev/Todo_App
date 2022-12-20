@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todo/model/todo_model.dart';
 import 'package:todo/pages/todo_add.dart';
 import 'package:todo/style/style.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:todo/store/localstrore.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,11 +12,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<TodoModel> listOfTodo = [];
+  @override
+  void initState() {
+    getInfo();
+    super.initState();
+  }
+
+  Future getInfo() async {
+    listOfTodo = await LocalStrore.getListTodo();
+    setState(() {});
+  }
+
   bool isCheck = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Style.primaryColor, 
         title: const Text(
           'TODO LIST',
           style: TextStyle(
@@ -26,30 +40,25 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 32),
-          // 32.verticalSpace,
-          Row(
-            children: [
-              const SizedBox(width: 32),
-              // 32.horizontalSpace,
-              Checkbox(
-                onChanged: (bool? value) {
-                  isCheck = !isCheck;
+      body: ListView.builder(
+        itemCount: listOfTodo.length,
+        itemBuilder: (context, index) {
+        return Row(
+          children: [
+            Checkbox(
+                value: listOfTodo[index].isDone,
+                onChanged: (value) {
+                  listOfTodo[index].isDone = !listOfTodo[index].isDone;
+                  LocalStrore.changeStatus(listOfTodo[index], index);
                   setState(() {});
-                },
-                value: isCheck,
-              ),
-              const SizedBox(width: 32),
-              Text(
-                'Flutter',
-                style: Style.textStyle(isDone: isCheck),
-              )
-            ],
-          ),
-        ],
-      ),
+                }),
+            Text(
+              listOfTodo[index].title,
+              style: Style.textStyle(isDone: listOfTodo[index].isDone),
+            )
+          ],
+        );
+      }),
       floatingActionButton: GestureDetector(
         onTap: () {
           Navigator.of(context)

@@ -4,9 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/model/todo_model.dart';
 
 abstract class LocalStrore {
-  LocalStrore_();
+  localStrore_();
 
-  static setTodo(TodoModel todo, int index) async {
+  static setTodo(TodoModel todo) async {
     SharedPreferences store = await SharedPreferences.getInstance();
     List<String> list = store.getStringList('todo') ?? [];
     String todoJson = jsonEncode(todo.toJson());

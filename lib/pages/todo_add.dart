@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo/model/todo_model.dart';
 import 'package:todo/pages/home_page.dart';
+import 'package:todo/store/localstrore.dart';
 import 'package:todo/style/style.dart';
 
 class TodoAdd extends StatefulWidget {
@@ -23,9 +25,10 @@ class _TodoAddState extends State<TodoAdd> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Style.primaryColor,
         centerTitle: true,
         title: Text(
-          'TODO LIST',
+          'TODO ADD',
           style: Style.textStyle(
               textColor: Style.whtieColor, fontWeight: FontWeight.w600),
         ),
@@ -34,6 +37,7 @@ class _TodoAddState extends State<TodoAdd> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: TextFormField(
+            controller: textEditingController,
             onChanged: (value) {
               if (value.isEmpty) {
                 isEmpty = true;
@@ -52,9 +56,11 @@ class _TodoAddState extends State<TodoAdd> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: GestureDetector(
+      floatingActionButton: InkWell(
         onTap: () {
           if (textEditingController.text.isNotEmpty) {
+            LocalStrore.setTodo(TodoModel(title: textEditingController.text));
+
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (a) => const HomePage()),
                 (route) => false);
