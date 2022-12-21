@@ -49,6 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
             12.verticalSpace,
             Text(
               'The best to do list application for you',
+              textAlign: TextAlign.center,
               style: Style.textStyleNormal(size: 13, textColor: const Color.fromARGB(255, 164, 170, 178)),
             ),
             50.verticalSpace,

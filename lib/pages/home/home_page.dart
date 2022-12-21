@@ -28,16 +28,8 @@ class _HomePageState extends State<HomePage>
   }
 
   Future getInfo() async {
-    List<TodoModel> newList = await LocalStrore.getListTodo();
-    newList.forEach(
-      (element) {
-        if (element.isDone) {
-          listOfDone.add(element);
-        } else {
-          listOfTodo.add(element);
-        }
-      },
-    );
+    listOfTodo = await LocalStrore.getListTodo();
+    listOfDone = await LocalStrore.getListDone();
     setState(() {});
   }
 
@@ -58,10 +50,6 @@ class _HomePageState extends State<HomePage>
           ),
           centerTitle: true,
           bottom: TabBar(
-            indicator: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(50)),
-              color: Style.blackColor
-            ),
             controller: _tabController,
             labelColor: Style.whtieColor,
             unselectedLabelColor: const Color.fromARGB(255, 174, 178, 185),
@@ -172,30 +160,30 @@ class _HomePageState extends State<HomePage>
                                 : showCupertinoDialog(
                                     context: context,
                                     builder: (context) {
-                                      return CupertinoAlertDialog(
+                                      return AlertDialog(
                                         title: const Text('Choose'),
                                         actions: [
-                                          // GestureDetector(
-                                          //   child: Padding(
-                                          //     padding: const EdgeInsets.all(8),
-                                          //     child: Text(
-                                          //       'Edit',
-                                          //       style: Style.textStyleNormal(),
-                                          //     ),
-                                          //   ),
-                                          //   onTap: () {
-                                          //     Navigator.of(context).push(
-                                          //       MaterialPageRoute(
-                                          //         builder: (a) => EditTodoPage(
-                                          //           todoModel:
-                                          //               listOfDone[index],
-                                          //           index: index,
-                                          //         ),
-                                          //       ),
-                                          //     );
-                                          //     setState(() {});
-                                          //   },
-                                          // ),
+                                          GestureDetector(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Text(
+                                                'Edit',
+                                                style: Style.textStyleNormal(),
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (a) => EditTodoPage(
+                                                    todoModel:
+                                                        listOfTodo[index],
+                                                    index: index,
+                                                  ),
+                                                ),
+                                              );
+                                              setState(() {});
+                                            },
+                                          ),
                                           GestureDetector(
                                             child: Padding(
                                               padding: const EdgeInsets.all(8),
@@ -206,6 +194,7 @@ class _HomePageState extends State<HomePage>
                                             ),
                                             onTap: () {
                                               LocalStrore.removeTodo(index);
+                                              listOfTodo.removeAt(index);
                                               Navigator.pop(context);
                                               setState(() {});
                                             },
@@ -239,17 +228,15 @@ class _HomePageState extends State<HomePage>
                                 Row(
                                   children: [
                                     Checkbox(
-                                        checkColor: Style.whtieColor,
-                                        focusColor: Style.primaryColor,
-                                        activeColor: Style.primaryColor,
                                         value: listOfTodo[index].isDone,
                                         onChanged: (value) {
                                           listOfTodo[index].isDone =
                                               !listOfTodo[index].isDone;
                                           listOfDone.add(listOfTodo[index]);
-
-                                          LocalStrore.editLocal(
-                                              listOfTodo[index], index);
+                                          LocalStrore.setDone(
+                                            listOfTodo[index],
+                                          );
+                                          LocalStrore.removeTodo(index);
                                           listOfTodo.removeAt(index);
                                           setState(() {});
                                         }),
@@ -316,7 +303,7 @@ class _HomePageState extends State<HomePage>
                                               ),
                                             ),
                                             onTap: () {
-                                              LocalStrore.removeTodo(index);
+                                              LocalStrore.removeDone(index);
                                               listOfDone.removeAt(index);
                                               Navigator.pop(context);
                                               setState(() {});
@@ -340,7 +327,7 @@ class _HomePageState extends State<HomePage>
                                 : showCupertinoDialog(
                                     context: context,
                                     builder: (context) {
-                                      return CupertinoAlertDialog(
+                                      return AlertDialog(
                                         title: const Text('Choose'),
                                         actions: [
                                           // GestureDetector(
@@ -373,7 +360,8 @@ class _HomePageState extends State<HomePage>
                                               ),
                                             ),
                                             onTap: () {
-                                              LocalStrore.removeTodo(index);
+                                              LocalStrore.removeDone(index);
+                                              listOfDone.removeAt(index);
                                               Navigator.pop(context);
                                               setState(() {});
                                             },
@@ -407,16 +395,15 @@ class _HomePageState extends State<HomePage>
                                 Row(
                                   children: [
                                     Checkbox(
-                                        checkColor: Style.whtieColor,
-                                        focusColor: Style.primaryColor,
-                                        activeColor: Style.primaryColor,
                                         value: listOfDone[index].isDone,
                                         onChanged: (value) {
                                           listOfDone[index].isDone =
                                               !listOfDone[index].isDone;
                                           listOfTodo.add(listOfDone[index]);
-                                          LocalStrore.editLocal(
-                                              listOfDone[index], index);
+                                          LocalStrore.setTodo(
+                                            listOfTodo[index],
+                                          );
+                                          LocalStrore.removeDone(index);
                                           listOfDone.removeAt(index);
                                           setState(() {});
                                         }),

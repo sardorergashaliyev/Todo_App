@@ -47,4 +47,45 @@ abstract class LocalStrore {
     list.removeAt(index);
     store.setStringList('todo', list);
   }
+
+  static setDone(TodoModel todo) async {
+    SharedPreferences store = await SharedPreferences.getInstance();
+    List<String> list = store.getStringList("done") ?? [];
+    String todoJson = jsonEncode(todo.toJson());
+    list.add(todoJson);
+    store.setStringList("done", list);
+  }
+
+  static editLocalDone(TodoModel todo, int index) async {
+    SharedPreferences store = await SharedPreferences.getInstance();
+    List<String> list = store.getStringList("done") ?? [];
+    List<TodoModel> listOfTodo = [];
+    list.forEach((element) {
+      listOfTodo.add(TodoModel.fromJson(jsonDecode(element)));
+    });
+    listOfTodo.removeAt(index);
+    listOfTodo.insert(index, todo);
+    list.clear();
+    listOfTodo.forEach((element) {
+      list.add(jsonEncode(element.toJson()));
+    });
+    store.setStringList("done", list);
+  }
+
+  static Future<List<TodoModel>> getListDone() async {
+    SharedPreferences store = await SharedPreferences.getInstance();
+    List<String> list = store.getStringList("done") ?? [];
+    List<TodoModel> listOfTodo = [];
+    list.forEach((element) {
+      listOfTodo.add(TodoModel.fromJson(jsonDecode(element)));
+    });
+    return listOfTodo;
+  }
+
+  static removeDone(int index) async {
+    SharedPreferences store = await SharedPreferences.getInstance();
+    List<String> list = store.getStringList("done") ?? [];
+    list.removeAt(index);
+    store.setStringList("done", list);
+  }
 }

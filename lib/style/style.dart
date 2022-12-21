@@ -23,7 +23,7 @@ abstract class Style {
           bool isDone = false}) =>
       TextStyle(
           fontSize: size,
-          color: textColor,
+          color: primaryColor,
           fontWeight: fontWeight,
           decoration:
               isDone ? TextDecoration.lineThrough : TextDecoration.none);
