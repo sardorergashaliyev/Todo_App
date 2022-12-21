@@ -14,7 +14,7 @@ abstract class LocalStrore {
     store.setStringList('todo', list);
   }
 
-  static changeStatus(TodoModel todo, int index) async {
+  static editLocal(TodoModel todo, int index) async {
     SharedPreferences store = await SharedPreferences.getInstance();
     List<String> list = store.getStringList("todo") ?? [];
     List<TodoModel> listOfTodo = [];
@@ -39,5 +39,12 @@ abstract class LocalStrore {
     });
 
     return listOfTodo;
+  }
+
+  static removeTodo(int index) async {
+    SharedPreferences store = await SharedPreferences.getInstance();
+    List<String> list = store.getStringList('todo') ?? [];
+    list.removeAt(index);
+    store.setStringList('todo', list);
   }
 }

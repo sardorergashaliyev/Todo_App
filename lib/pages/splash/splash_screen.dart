@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:todo/pages/home_page.dart';
+import 'package:todo/pages/home/home_page.dart';
 import 'package:todo/style/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -41,14 +41,15 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             Text(
               'Todo App',
-              style: Style.textStyle(
+              style: Style.textStyleNormal(
                 size: 26,
+                textColor: Style.primaryColor
               ),
             ),
             12.verticalSpace,
             Text(
               'The best to do list application for you',
-              style: Style.textStyle(size: 13),
+              style: Style.textStyleNormal(size: 13, textColor: const Color.fromARGB(255, 164, 170, 178)),
             ),
             50.verticalSpace,
             isLoading
